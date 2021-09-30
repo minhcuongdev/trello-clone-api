@@ -1,15 +1,24 @@
 import express from 'express'
-import { connectDB } from '*/config/mongodb.js'
-import { env } from '*/config/environment.js'
+import { connectDB } from '*/config/mongodb'
+import { env } from '*/config/environment'
 
-const app = express()
+connectDB()
+    .then(() => console.log('Connected to database successfully!'))
+    .then(() => bootApp())
+    .catch((error) => {
+        console.log(error)
+        process.exit(1)
+    })
 
-connectDB().catch(console.log)
+const bootApp = () => {
+    const app = express()
 
-app.get('/', (req, res) => {
-    res.end('<h1>Hello World! MINH CUONG</h1>')
-})
+    app.get('/', async (req, res) => {
+        res.end('<h1>Hello World! MINH CUONG</h1>')
+    })
 
-app.listen(env.PORT || 8080, env.HOST, () => {
-    console.log(`sever is running at ${env.HOST}:${env.PORT}/`)
-})
+    app.listen(env.APP_PORT || 8080, env.APP_HOST, () => {
+        console.log(`sever is running at ${env.APP_HOST}:${env.APP_PORT}/`)
+    })
+}
+
