@@ -4,6 +4,8 @@ import { env } from '*/config/environment.js'
 
 const uri = env.MONGODB_URI
 
+let dbInstance = null
+
 export const connectDB = async () => {
 
     const client = new MongoClient(uri, {
@@ -11,20 +13,22 @@ export const connectDB = async () => {
         useNewUrlParser: true
     })
 
-    try {
-        await client.connect()
-        console.log('Connect to Database successfully')
+    await client.connect()
 
-        await listDataBase(client)
-    } finally {
-        // Ensure that database is closed when finishing or erroring
-        await client.close()
-    }
+    // Assign clientDB to our dbInstance
+    dbInstance = client.db(env.DATABASE_NAME)
 }
 
-const listDataBase = async (client) => {
-    const databasesList = await client.db().admin().listDatabases()
-    console.log(databasesList)
-    console.log('Your database:')
-    databasesList.databases.forEach(db => console.log(`- ${db.name}`))
+// get database instance
+export const getDB = () => {
+    if (!dbInstance) throw new Error('Must connect to database first')
+    return dbInstance
 }
+
+
+// const listDataBase = async (client) => {
+//     const databasesList = await client.db().admin().listDatabases()
+//     console.log(databasesList)
+//     console.log('Your database:')
+//     databasesList.databases.forEach(db => console.log(`- ${db.name}`))
+// }
