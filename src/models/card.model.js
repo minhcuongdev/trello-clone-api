@@ -45,4 +45,36 @@ const createNew = async (data) => {
     }
 }
 
-export const CardModel = { cardCollectionName, createNew, findOneById }
+const deleteMany = async (ids) => {
+    try {
+        const transformIds = ids.map( i => ObjectId(i))
+        const result = await getDB().collection(cardCollectionName).updateMany(
+            { _id: { $in: transformIds } },
+            { $set: { _destroy: true } }
+        )
+
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const update = async (id, data) => {
+    try {
+        const updateData = { ...data }
+        if (data.boardId) updateData.boardId = ObjectId(data.boardId)
+        if (data.columnId) updateData.columnId = ObjectId(data.columnId)
+
+        const result = await getDB().collection(cardCollectionName).findOneAndUpdate(
+            { _id: ObjectId(id) },
+            { $set: updateData },
+            { returnDocument: 'after' }
+        )
+
+        return result.value
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+export const CardModel = { cardCollectionName, createNew, findOneById, deleteMany, update }

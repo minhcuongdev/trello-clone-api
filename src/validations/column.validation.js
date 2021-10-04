@@ -21,7 +21,6 @@ const update = async (req, res, next) => {
         title: Joi.string().min(3).max(20).trim()
     })
     try {
-        console.log(req.body)
         await condition.validateAsync(req.body, {
             abortEarly: false,
             allowUnknown: true
