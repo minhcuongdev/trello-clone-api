@@ -5,12 +5,9 @@ import { BoardValidation } from '*/validations/board.validation'
 const router = express.Router()
 
 router.route('/')
-    .get((req, res) => {
-        res.status(200).json('GET SUCCESSFULLY')
-    })
     .post(BoardValidation.createNew, BoardController.createNew)
 
 router.route('/:id')
     .get(BoardController.getFullBoard)
-
+    .put(BoardValidation.update, BoardController.update)
 export const boardRoutes = router

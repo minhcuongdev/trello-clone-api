@@ -58,9 +58,13 @@ const createNew = async (data) => {
 
 const update = async (id, data) => {
     try {
+
+        const updateData = { ...data }
+        if (data.boardId) updateData.boardId = ObjectId(data.boardId)
+
         const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
             { _id: ObjectId(id) },
-            { $set: data },
+            { $set: updateData },
             { returnDocument: 'after' }
         )
         return result.value
