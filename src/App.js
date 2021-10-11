@@ -27,8 +27,8 @@ const bootApp = () => {
         res.status(200).json('ACCESS SEVER')
     })
 
-    app.listen(env.APP_PORT || 8080, env.APP_HOST, () => {
-        console.log(`sever is running at ${env.APP_HOST}:${env.APP_PORT}`)
+    app.listen(env.APP_PORT || process.env.PORT, env.APP_HOST, () => {
+        console.log(`sever is running at port : ${process.env.PORT}`)
     })
 }
 
