@@ -6,4 +6,4 @@ export const HttpStatusCode = {
     INTERNAL_SEVER: 500
 }
 
-export const WHITELIST_DOMAINS = ['http://localhost:3001', 'http://localhost:3000']
+export const WHITELIST_DOMAINS = ['http://localhost:3000', 'https://trello-web-dc2a6.web.app']
